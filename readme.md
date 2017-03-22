@@ -16,11 +16,11 @@ python3 main.py -p [problem_id] -d [dead_line] -o [output_folder]
 Download code:
 1. Setting login_data's account and password at main.py
     ```
-    python3 main.py -p [problem_id] -d [dead_line] -c -o [output_folder]
+    python3 main.py -p [problem_id] -d [dead_line] -code -o [output_folder]
     ```
 2. Login with args
     ```
-    python3 main.py -p [problem_id] -d [dead_line] -c -ac [user_account] -pwd [user_password] -o [output_folder]
+    python3 main.py -p [problem_id] -d [dead_line] -code -ac [user_account] -pwd [user_password] -o [output_folder]
     ```
 
 More detail
@@ -30,7 +30,7 @@ python3 main.py -u
 
 Code similarity
 ```
-moss.pl -l c ../code/*.c
+moss.pl -l c code/*.c
 ```
 
 ### Reference

@@ -122,11 +122,8 @@ def download_code(url_df, output):
         os.mkdir(output)
     for i in range( 0, len(url_df) ):
         res = session.get( url_df.loc[ i, 'code_url'] )
-        tag = "textarea"
-        soup = BeautifulSoup( res.text, "lxml" )
-        code = []
-        for drink in soup.select('{}'.format(tag)):
-            code.append( drink )
+        soup = BeautifulSoup( res.content, "html5lib" )
+        code = soup.select('textarea')
         with open( output + '/' + url_df.loc[ i, 'User'] + '.c', 'w') as f:
             f.write(code[0].text)
 

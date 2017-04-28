@@ -52,9 +52,11 @@ def final_page(res):
     link = []
     for drink in soup.select('{}'.format(tag)):
         link.append( drink )
-    parsed_url = urlparse( link[-1].attrs["href"] )
-
-    return int(parse_qs(parsed_url.query)["page"][0])
+    if len(link) == 0:
+        return 0
+    else:
+        parsed_url = urlparse( link[-1].attrs["href"] )
+        return int(parse_qs(parsed_url.query)["page"][0])
 
 def is_time_formate(t):
     try:
@@ -66,19 +68,23 @@ def is_time_formate(t):
 def judge_df(url):
     df = None
     res = session.get( url )
-    for i in range( 1, final_page(res) + 1 ):
-        cur_url = url + "&page=" + str(i)
-        cur_df =  pandas.read_html( cur_url, header=0 )[0]
-        if df is None:
-            df = cur_df
-        else:
-            df = df.append(cur_df)
+    cur_final_page = final_page(res)
+    if cur_final_page!=0:
+        for i in range( 1, final_page(res) + 1 ):
+            cur_url = url + "&page=" + str(i)
+            cur_df =  pandas.read_html( cur_url, header=0 )[0]
+            if df is None:
+                df = cur_df
+            else:
+                df = df.append(cur_df)
+        df = df[df['Code']=='C'].reset_index( drop=True )
     return df
 
 def judge_score(p_url, dead_line, output):
 
     df = None
-    for status in ["AC","WA"]:
+    # df = judge_df(p_url)
+    for status in ["AC","WA","TLE","MLE","OLE","RE"]:
         cur_df = judge_df(p_url + "&status=" + status )
         if df is None:
             df = cur_df
